@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            background-color: #f4f4f4;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;          
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .forProductImg {
+        	background-color: #fff;
+        	height: 450px;
+            max-width: 30%;
+            max-height: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            color: gray; 
+            border: 1px solid #5C3D2E;
+            box-shadow: 0 0 2px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .forProductData {
+            max-width: 100%;
+            background-color: #5C3D2E;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #DDDDDD;
+            border-bottom: 1px solid #fff;
+            border-top: 1px solid #fff;
+        }
+        .imgProduct {
+            border-radius: 6px;
+            flex: 1 0 100%;
+            max-width: 250px;
+            max-height: 250px;
+        }
+        h3 {
+            color: #5C3D2E;; 
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        label {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .form-control {
+            color: #000;
+            background-color: #E4E4E4;
+        }
+        .form-group {
+            margin-bottom: 30px;
+        }
+        .inputData::placeholder {
+            font-size: 1.4rem;
+            color: #000;
+        }
+        .saveBtn, .backBtn {
+        	position: absolute;
+        	width: 35%;
+            height: 40px;
+            border: none;
+            outline: none;
+            background-color: #0A6847;
+            color: #fff;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 22px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border-radius: 10px;
+            top: -15px;
+        }
+        .saveBtn:hover {
+            background-color: #0A6847;
+            transform: translateY(-4px);
+        }
+        .backBtn {
+            padding-top: 13px;
+            text-align: center;
+            background-color: #373A40;
+        }
+        .backBtn:hover {
+            color: #fff;
+            transform: translateY(-4px);
+            background-color: #373A40;
+            text-decoration: none;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .form-group {
+            padding-right: 15px;
+            padding-left: 15px;
+            flex: 1 0 50%;
+            max-width: 50%;
+        }
+        .form-group.full-width {
+            flex: 1 0 100%;
+            max-width: 100%;
+        }
+        .forType {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        input[type="radio"] {
+            position: relative;
+            margin-right: 10px;
+            top: 4px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            background-color: #1e1e1e;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+        input[type="radio"]:checked {
+            background-color: #28a745;
+        }
+        input[type="text"], input[type="file"] {
+            max-width: 100%;
+            height: 40px;
+            text-align: left;
+        }
+        input[type="text"],
+        select {
+            font-size: 1.5rem;
+        }
+        input[type="file"] {
+            padding: 8px;
+            color: #000;
+            width: 100%;
+            font-size: 1.4rem;
+            box-sizing: border-box;
+        }
+        option {
+            color: #000;
+            background-color: #E4E4E4;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-size: 1.4rem;
+            border-bottom: 1px solid #000;
+        }
+        .footer {
+            display: flex;
+            position: relative;
+        }
+        .saveBtn{
+        	left: 570px;
+        }
+        .backBtn{
+        	line-height: 16px;
+        	left: 420px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="forProductImg">
+            <h3>Update Product</h3>
+            <img th:src="${product.photosImagePath}" class="imgProduct" alt="Product Photo"/>
+            <label for="image">Img Source: <label th:text="${product.photos}"></label></label>
+        </div>
+        <div class="forProductData">
+            
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                <p th:text="${errorMessage}"></p>
+            </div>
+            <form th:action="@{/updateProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productId">Product ID:</label>
+                        <input type="text" id="productId" th:field="*{productId}" class="form-control inputData" readonly="readonly"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="productName">Product Name:</label>
+                        <input type="text" id="productName" th:field="*{productName}" class="form-control inputData" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" th:field="*{description}" class="form-control inputData" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Types:</label><br>
+                        <div class="forType">
+                            <label><input type="radio" name="type" th:field="*{type}" th:value="Men" th:checked="${product.type == 'Men'}"> Men</label>
+                            <label><input type="radio" name="type" th:field="*{type}" th:value="Women" th:checked="${product.type == 'Women'}"> Women</label>
+                            <label><input type="radio" name="type" th:field="*{type}" th:value="Kid" th:checked="${product.type == 'Kid'}"> Kid</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Photo:</label>
+                        <input type="file" id="image" name="image" accept="image/png, image/jpeg" class="form-control inputData" required>
+                    </div>
+                  
+	                
+	                <div class="form-group">
+					    <label for="brand">Brands:</label>
+					    <select id="brand" name="brand" multiple class="form-control inputData" required>
+					        <option th:each="brand : ${allBrands}"
+					                th:value="${brand.brandId}"
+					                th:text="${brand.brandName}"
+					                th:selected="${product.brand != null and product.brand.brandId == brand.brandId}">
+					        </option>
+					    </select>
+					</div>
+
+                    
+                   
+                    
+                    <div class="form-group footer">
+                        <a th:href="@{/admin/clerk}" class="backBtn">Back</a>
+                        <button type="submit" class="saveBtn">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

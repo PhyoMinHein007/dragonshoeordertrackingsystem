@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Production Manager Orders</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #fff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+        nav {
+            background-color: #EF5A6F;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            color: #000;
+            text-align: center;
+            border: 1px solid #000;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #EEEEEE;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .active {
+            color: #fff;
+            background-color: #5C3D2E;
+        }
+        nav a:hover {
+            color: #fff;
+            background-color: #755847;
+            text-decoration: none;
+        }
+        .no-border td {
+            border-top: none !important;
+            border-bottom: none !important;
+        }
+        .table-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 10px;
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            max-width: 1200px;
+            font-size: 16px;
+            border-collapse: collapse;
+            background-color: #f4f4f4;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: center;
+        }
+        .table th {
+            background-color: #5C3D2E;
+            color: #fff;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .table tbody tr:hover {
+            background-color: #ddd;
+        }
+        .table tbody td {
+            vertical-align: middle;
+        }
+        .text-container {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-bottom: 1px solid #ddd;
+        }
+        .text-container h4 {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .form-container {
+            display: flex;
+            align-items: center;
+        }
+        .form-container label {
+            margin-right: 10px;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+        .form-container .forSelection {
+            outline: none;
+            height: 38px;
+            width: 180px;
+            padding: 5px 10px;
+            font-size: 16px;
+            color: #555;
+        }
+        .forTotalPrice {
+            margin: 20px;
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+            color: #444;
+        }
+        .forTotalPrice span {
+            color: green;
+        }
+        
+		.logoutLogo{
+			position: absolute;
+			left: 30px;
+			top: 150px;
+		}
+		
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a class="active" th:href="@{/admin/productionManagerOrder}">Orders</a>
+        <a th:href="@{/admin/productionManagerPA}">Product Availability</a>
+    </nav>
+    
+    <div class="logout-container">
+         <a href="/login">
+            <img src="/images/logoutblack.svg" class="logoutLogo" alt="Logout Logo">
+           </a>
+     </div> 
+
+    <div class="text-container">
+        <h4>Today's Report</h4>
+        <form th:action="@{/admin/productionManagerOrder}" method="get" class="form-container">
+            <label>Select Date:</label>
+            <input class="forSelection" type="date" name="selectedDate" th:value="${selectedDate}" onchange="this.form.submit()" />
+        </form>
+    </div>
+
+    <p class="forTotalPrice">Total Price: <span th:text="${totalPrice}"></span></p>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>User Name</th>
+                    <th>Size</th>
+                    <th>Order Date</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="orderItem, iterStat : ${listOrderItem}"
+                    th:class="${iterStat.even} ? 'even' : 'odd'"
+                    th:classappend="${iterStat.index > 0 && orderItem.order.orderId == listOrderItem[iterStat.index - 1].order.orderId} ? 'no-border'">
+                    <td th:text="${orderItem.productDetail.product.productName}"></td>
+                    <td th:text="${orderItem.order.firstName + ' ' + orderItem.order.lastName}"></td>
+                    <td th:text="${orderItem.productDetail.sizeNo}"></td>
+                    <td th:text="${orderItem.order.orderDate}"></td>
+                    <td th:text="${orderItem.price}"></td>
+                    <td th:text="${orderItem.quantity}"></td>
+                    <td th:if="${iterStat.index == 0 or orderItem.order.orderId != listOrderItem[iterStat.index - 1].order.orderId}"
+                        rowspan="${listOrderItem.?[order?.orderId == orderItem.order.orderId].size()}">
+                        <span th:text="${orderItem.order.totalAmount}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

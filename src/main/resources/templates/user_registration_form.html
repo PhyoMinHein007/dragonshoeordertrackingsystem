@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register User</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('/images/bg.jpg'); /* Ensure the path is correct */
+    background-size: cover;
+    background-position: center center; /* Ensures the background is centered */
+    background-repeat: no-repeat; /* Prevents the background from repeating */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center; /* Center aligns the header text */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%; /* Ensures all input fields are the same width */
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px;
+            background-color: #5C3D2E; 
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px; /* Adds space between buttons */
+        }
+        button[type="submit"] {
+            width: 100%; /* Makes the submit button expand full width */
+        }
+        button[type="button"] {
+            background: none;
+            color: blue;
+            border: none; /* Removes border for a more link-like appearance */
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Registration</h1>
+        <form action="#" th:action="@{/registerUser}" th:object="${user}" method="post">
+            <div class="error" th:if="${error}" th:text="${error}"></div>
+            <input type="text" th:field="*{firstName}" placeholder="First Name" required />
+            <input type="text" th:field="*{lastName}" placeholder="Last Name" required />
+            <input type="email" th:field="*{email}" placeholder="Email" required />
+            <input type="password" th:field="*{password}" placeholder="Password" required />
+            <input type="text" th:field="*{address}" placeholder="Address" required />
+            <input type="tel" th:field="*{phNo}" placeholder="Phone No" required />
+            <div class="buttons">
+                <button type="submit">Register</button>
+                <div>
+                    Already have an account?
+                    <button type="button" onclick="window.location.href='/login'">Login</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

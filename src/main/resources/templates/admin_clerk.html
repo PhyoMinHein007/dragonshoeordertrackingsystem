@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Clerk</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            background-color: #f4f4f4;
+            color: #000;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+            color: #ffffff;
+        }
+
+        .btn-add {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #5C3D2E; 
+            color: #ffffff;
+        }
+
+        .btn-add:hover {
+            background-color: #755847;
+            color: #fff;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+
+        table, th, td {
+            color: #000;
+            text-align: center;
+            border-collapse: collapse;
+            border: 1px solid #333;
+        }
+
+        th {
+            background-color:#5C3D2E; 
+            padding: 15px;
+            color: #fff;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        tr:hover td {
+            background-color: lightgray;
+        }
+
+        .img-rounded {
+            border-radius: 8px;
+        }
+        
+        .search-container {
+		    position: relative;
+		    display: flex;
+		    align-items: center;
+		}
+		
+		.search-input {
+            color: #000;
+            background-color: #ffffff;
+            border: 1px solid #000;
+            padding: 10px;
+            margin-right: 10px;
+            font-size: 1.4rem;
+            border-radius: 5px;
+            width: 300px;
+            outline: none;
+            
+        }
+        
+        .search-input::placeholder {
+            color: #000;
+        }
+        
+        .close-icon {
+		    display: none;
+		    position: absolute;
+		    right: 24px; 
+		    
+		    width: 18px;
+		    top: 50%; 
+		    transform: translateY(-50%);
+		    color: #45474B;
+		    cursor: pointer;
+		}
+		
+        .search-input:not(:placeholder-shown) + .close-icon {
+		    display: block;
+		}
+
+        form {
+        	width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        .form-and-button-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            
+        }
+        
+        .oknasr { 
+        	width: 25%;
+        }
+
+        .action-buttons {
+        	margin-left: 20px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+        }
+
+        .action-buttons .btn {
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: flex-end;
+            
+        }
+        
+        .pagination > li > a, .pagination > li > span {
+            color: #EEEEEE;
+            background-color: #1e1e1e;
+            border: 1px solid #EEEEEE;
+            margin: 0 5px;
+            padding: 8px 20px;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        .pagination > li > a:hover, .pagination > li > span:hover {
+            background-color: darkgray;
+            border-color: #EEEEEE;
+            color: #EEEEEE;
+        }
+
+        .pagination > .active > a, .pagination > .active > span {
+            background-color: #5C3D2E; 
+            border-color: #EEEEEE;
+        }
+        .close-icon {
+		  display: none;
+		  cursor: pointer;
+		}
+        
+        .link-container{
+        	display: flex;
+        	gap: 30px;
+        }
+        
+        .btn-info, .btn-danger, .btn-primary {
+   			background-color: transparent; /* Remove background color */
+    		border: 2px solid #5C3D2E; 
+    		color: #5C3D2E; 
+		}
+
+		.btn-info:hover, .btn-danger:hover, .btn-primary:hover {
+    		background-color: #5C3D2E; 
+    		color: #fff; 
+		}
+		
+		.logoutLogo{
+			position: absolute;
+			left: 30px;
+			top: 40px;
+		}
+        
+        
+        
+    </style>
+</head>
+
+<body>        
+
+                <div class="logout-container">
+                    <a href="/login">
+                        <img src="/images/logoutblack.svg" class="logoutLogo" alt="Logout Logo">
+                    </a>
+                </div>  
+
+    <div class="container">
+        <div class="form-and-button-container">
+            <form th:action="@{/admin/clerk}" method="get" >
+            	<div class="search-container">
+                    
+                    <input type="text" name="keyword" id="keyword" size="15" th:value="${keyword}" placeholder="Search..." required class="search-input" oninput="toggleClearIcon()">
+					
+					<img src="/images/close.png" class="close-icon" alt="Close Logo" id="clearIcon" onclick="clearSearch()">
+                    
+                </div>
+                <div class="link-container">
+                	<a th:href="@{/addProduct}" class="btn btn-add">Add Product</a>
+                	<a th:href="@{/addBrand}" class="btn btn-add">Add Brand</a>
+                	<a th:href="@{/addProductDetail}" class="btn btn-add">Add Product Detail</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        
+                        <th>Type</th>
+                        <th>Brand Name</th>
+                        <th>Photo</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${listProduct}">
+                        <td th:text="${product.productId}"></td>
+                        <td th:text="${product.productName}"></td>
+                        
+                        <td th:text="${product.type}"></td>
+                        <td th:text="${product.brand.brandName}"></td>
+                        <td><img th:src="${product.photosImagePath}" class="img-rounded" alt="No pic" width="100" height="60"/></td>
+                        <td class="oknasr">
+                            <div class="action-buttons">
+                                <a th:href="@{/updateProduct/{productId}(productId=${product.productId})}" class="btn btn-info">Update</a>
+                                <a th:href="@{/deleteProduct/{productId}(productId=${product.productId})}" class="btn btn-danger delete-btn">Delete</a>
+                                <a th:href="@{/viewProductDetail/{productId}(productId=${product.productId})}" class="btn btn-primary">View Detail</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div th:if="${totalPages > 1}" class="pagination-container">
+            <ul class="pagination">
+                <li th:class="${currentPage == 1} ? 'disabled' : ''">
+                    <a th:if="${currentPage != 1}"
+                       th:href="@{'/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+                    <span th:unless="${currentPage != 1}">Previous</span>
+                </li>
+                <li th:each="i: ${#numbers.sequence(1, totalPages)}"
+                    th:class="${currentPage == i} ? 'active' : ''">
+                    <a th:if="${currentPage != i}"
+                       th:href="@{'/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                    <span th:unless="${currentPage != i}">[[${i}]]</span>
+                </li>
+                <li th:class="${currentPage == totalPages} ? 'disabled' : ''">
+                    <a th:if="${currentPage != totalPages}"
+                       th:href="@{'/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                    <span th:unless="${currentPage != totalPages}">Next</span>
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+
+        
+    <script>
+     
+
+        function toggleClearIcon() {
+            var keywordInput = document.getElementById('keyword');
+            var clearIcon = document.getElementById('clearIcon');
+
+            if (keywordInput.value.trim() !== '') {
+                clearIcon.style.display = 'inline-block'; 
+            } else {
+                clearIcon.style.display = 'block'; 
+            }
+        }
+
+        function clearSearch() {
+        	
+            var keywordInput = document.getElementById('keyword');
+            keywordInput.value = ''; 
+            toggleClearIcon(); 
+            window.location = "[[@{/admin/clerk}]]";
+        }
+
+    </script>
+        
+       
+</body>
+</html>

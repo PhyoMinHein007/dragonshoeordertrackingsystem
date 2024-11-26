@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Brand</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #000;
+            background-color: #f4f4f4;
+        }
+        .container {
+        	display: flex;
+        	flex-direction: column;
+        	gap: 30px;
+        }
+        .data-container {
+            max-width: 100%;
+            background-color: lightgray;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #DDDDDD; 
+        }
+       
+        .form-control {
+            color: #000;
+            background-color: #E4E4E4;
+        }
+        
+        .inputData::placeholder {
+            font-size: 1.4rem;
+            color: #000;
+        }
+        .saveBtn, .backBtn {
+            width: 250px;
+            text-align: center;
+            padding: 10px;
+            border: none;
+            outline: none;
+            background-color: #5C3D2E;;
+            color: #fff;
+            cursor: pointer;
+            font-size: 15px;
+            
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .saveBtn:hover {
+            background-color: #755847; 
+            transform: translateY(-4px);
+        }
+        .backBtn {
+            background-color: #373A40;
+        }
+        .backBtn:hover {
+            color: #fff;
+            transform: translateY(-4px);
+            background-color: #373A40;
+            text-decoration: none;
+        }
+        
+        input[type="text"] {
+            max-width: 500px;
+            height: 40px;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+        
+        .forHead {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        
+        
+        
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+            color: #ffffff;
+        }
+
+        
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+
+        table, th, td {
+            color: #000;
+            text-align: center;
+            border-collapse: collapse;
+            border: 1px solid #333;
+        }
+
+        th {
+            background-color: #5C3D2E;;
+            padding: 15px;
+            color: #fff;
+            
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        tr:hover td {
+            background-color: lightgray;
+        }
+
+
+        
+        .table-container {
+            overflow-x: auto;
+            
+        }
+        
+        
+        
+        .oknasr { 
+        	width: 25%;
+        }
+
+        .action-buttons {
+        	margin-left: 20px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+        }
+
+        .action-buttons .btn {
+            padding: 10px 15px;
+            font-size: 1.2rem;
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: flex-end;
+            
+        }
+        
+        .pagination > li > a, .pagination > li > span {
+            color: #EEEEEE;
+            background-color: #1e1e1e;
+            border: 1px solid #EEEEEE;
+            margin: 0 5px;
+            padding: 8px 20px;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        .pagination > li > a:hover, .pagination > li > span:hover {
+            background-color: #2c65a3;
+            border-color: #EEEEEE;
+            color: #EEEEEE;
+        }
+
+        .pagination > .active > a, .pagination > .active > span {
+            background-color: #0056b3;
+            border-color: #EEEEEE;
+        }
+        
+        
+        .edit-form-container {
+		    width: 330px;
+		    height: auto; 
+		    display: none; 
+		    position: fixed; 
+		    top: 45%; 
+		    left: 50%; 
+		    transform: translate(-50%, -50%); 
+		    background-color: #191919;
+		    padding: 30px;
+		    border-radius: 10px;
+		    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		    color: #DDDDDD; 
+		    z-index: 1000; 
+		}
+        
+        
+        .forHeader{
+        	display: flex;
+        	justify-content: space-between;
+        	align-items: center;
+        	margin-bottom: 30px;
+        }
+        
+        h4{
+        	font-size: 25px;
+        	text-transform: uppercase;
+        }
+        
+        .forUpdate {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .updateBtn{
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            border: none;
+            outline: none;
+            background-color: #0A6847;
+            color: #fff;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 5px;
+            
+        }
+        .updateBtn:hover {
+            background-color: #07572F;
+            
+        }
+        
+        .close-icon {
+		  font-size: 25px;
+		  cursor: pointer;
+		}
+		
+		.btn-info, .btn-danger, .btn-primary {
+			border-radius: 50px;
+   			background-color: transparent; 
+    		border: 2px solid #5C3D2E; 
+    		color: #5C3D2E; 
+		}
+
+		.btn-info:hover, .btn-danger:hover, .btn-primary:hover {
+    		background-color: #5C3D2E; 
+    		color: #fff; 
+		}
+        
+        
+        
+    </style>
+</head>
+<body>
+
+    <div class="container">
+    	<div class="data-container">
+	        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+	            <span th:text="${errorMessage}"></span>
+	        </div>
+	        <form th:action="@{/saveBrand}" th:object="${brand}" method="post" enctype="multipart/form-data" id="brandForm">
+	            <div class="forHead">
+	            	<a th:href="@{/admin/clerk}" class="backBtn">Back to Home</a>
+	         
+	            	<input type="text" id="brandName" th:field="*{brandName}" class="form-control inputData" placeholder="Enter Brand Name" required>
+	            
+	            	<button type="submit" class="saveBtn">Save Brand</button>
+	            
+	            </div>
+	        </form>
+	    </div>
+	    
+	    <div class="table-container">
+	        <table class="table table-hover">
+	            <thead>
+	                <tr>
+	                    <th>Id</th>
+	                    <th>Name</th>
+	                    <th>Actions</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr th:each="brand : ${listBrand}">
+	                    <td th:text="${brand.brandId}"></td>
+	                    <td th:text="${brand.brandName}"></td> 
+	                    <td class="oknasr">
+                            <div class="action-buttons">
+                                <a href="#" class="btn btn-info update-btn" th:attr="data-brand-id=${brand.brandId}">Update</a>
+                                <a th:href="@{/deleteBrand/{brandId}(brandId=${brand.brandId})}" class="btn btn-danger delete-btn">Delete</a>
+                                
+                            </div>
+                        </td>
+	                </tr>
+	                
+	            </tbody>
+	            
+	        </table>
+	       
+	        <div class="edit-form-container" id="editForm">
+	            <form th:action="@{/updateBrand}" th:object="${brand}" method="post" enctype="multipart/form-data">
+	            	<div class="forHeader">
+	            		<h4>Update</h4>
+	            		<i class="fas fa-times close-icon" id="clearIcon" onclick="window.location.href='/addBrand'" ></i>
+	            		
+	            	</div>
+	            	<div class="forUpdate">
+	            		
+		                <input type="hidden" id="updateBrandId" th:name="brandId" />
+		                <input type="text" id="updateBrandName" th:field="*{brandName}" class="form-control inputData" placeholder="Enter Brand Name" required>
+		                <button type="submit" class="updateBtn">Update Brand</button>
+	            	</div>
+	            </form>
+	        </div>
+	    </div>
+	    
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script>
+  
+    $(document).ready(function() {
+        $('.update-btn').click(function(e) {
+            e.preventDefault();
+            
+          
+            var brandId = $(this).data('brand-id');
+            
+           
+            var brandName = $(this).closest('tr').find('td:eq(1)').text(); 
+            
+            $('#updateBrandId').val(brandId);
+            $('#updateBrandName').val(brandName);
+            
+         
+            $('.data-container').show();
+            $('#editForm').show();
+        });
+    });
+</script>
+
+</body>
+</html>
